@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Master Production Blueprint",
+  "type": "object",
+  "required": ["project", "chapters", "scenes", "assets"],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": ["project_id", "title", "genre", "total_runtime_seconds", "target_platform", "tone", "visual_style", "narration_style", "music_strategy", "budget_mode", "language", "created_at", "status"],
+      "properties": {
+        "project_id": {"type": "string"},
+        "title": {"type": "string"},
+        "genre": {"type": "string", "enum": ["documentary", "cinematic", "youtube", "short"]},
+        "total_runtime_seconds": {"type": "integer", "minimum": 5, "maximum": 3900},
+        "target_platform": {"type": "string", "enum": ["youtube", "shorts", "film", "tv"]},
+        "tone": {"type": "string", "enum": ["serious", "emotional", "neutral", "dramatic"]},
+        "visual_style": {"type": "string"},
+        "narration_style": {"type": "string"},
+        "music_strategy": {"type": "string"},
+        "budget_mode": {"type": "string", "enum": ["low", "balanced", "premium"]},
+        "language": {"type": "string"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "status": {"type": "string", "enum": ["planning", "approved", "generating", "completed"]}
+      }
+    },
+    "chapters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["chapter_id", "title", "chapter_runtime_seconds", "narrative_goal", "music_theme"],
+        "properties": {
+          "chapter_id": {"type": "integer"},
+          "title": {"type": "string"},
+          "chapter_runtime_seconds": {"type": "integer", "minimum": 3, "maximum": 3900},
+          "narrative_goal": {"type": "string"},
+          "music_theme": {"type": "string"}
+        }
+      }
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "chapter_id", "start_time_seconds", "duration_seconds", "visual", "narration", "audio", "transition", "constraints"],
+        "properties": {
+          "scene_id": {"type": "string"},
+          "chapter_id": {"type": "integer"},
+          "start_time_seconds": {"type": "integer", "minimum": 0},
+          "duration_seconds": {"type": "integer", "minimum": 3, "maximum": 25},
+          "visual": {
+            "type": "object",
+            "required": ["type", "description", "camera_motion", "style_reference", "generation_method", "recommended_engine"],
+            "properties": {
+              "type": {"type": "string"},
+              "description": {"type": "string"},
+              "camera_motion": {"type": "string"},
+              "style_reference": {"type": "string"},
+              "generation_method": {"type": "string"},
+              "recommended_engine": {"type": "string"}
+            }
+          },
+          "narration": {
+            "type": "object",
+            "required": ["text", "voice", "emotion", "start_offset_seconds"],
+            "properties": {
+              "text": {"type": "string"},
+              "voice": {"type": "string"},
+              "emotion": {"type": "string"},
+              "start_offset_seconds": {"type": "integer", "minimum": 0}
+            }
+          },
+          "audio": {
+            "type": "object",
+            "required": ["music_mood", "sound_effects"],
+            "properties": {
+              "music_mood": {"type": "string"},
+              "sound_effects": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          },
+          "transition": {
+            "type": "object",
+            "required": ["in", "out"],
+            "properties": {
+              "in": {"type": "string"},
+              "out": {"type": "string"}
+            }
+          },
+          "constraints": {
+            "type": "object",
+            "required": ["max_cost_usd", "retry_limit"],
+            "properties": {
+              "max_cost_usd": {"type": "number", "minimum": 0},
+              "retry_limit": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["asset_id", "scene_id", "asset_type", "source_engine", "file_path", "duration_seconds", "cost_usd", "status"],
+        "properties": {
+          "asset_id": {"type": "string"},
+          "scene_id": {"type": "string"},
+          "asset_type": {"type": "string"},
+          "source_engine": {"type": "string"},
+          "file_path": {"type": "string"},
+          "duration_seconds": {"type": "integer", "minimum": 1},
+          "cost_usd": {"type": "number", "minimum": 0},
+          "status": {"type": "string", "enum": ["pending", "completed", "failed"]}
+        }
+      }
+    }
+  }
+}
